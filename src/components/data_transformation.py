@@ -37,7 +37,6 @@ class DataTransformation:
                 steps=[
                 ("imputer",SimpleImputer(strategy="median")),
                 ("scaler",StandardScaler())
-
                 ]
             )
 
@@ -48,7 +47,6 @@ class DataTransformation:
                 ("one_hot_encoder",OneHotEncoder()),
                 ("scaler",StandardScaler(with_mean=False))
                 ]
-
             )
 
             logging.info(f"Categorical columns: {categorical_columns}")
@@ -77,12 +75,19 @@ class DataTransformation:
 
             logging.info("Read train and test data completed")
 
+         # Check for missing values before transformation
+            missing_train_values = train_df.isnull().sum()
+            missing_test_values = test_df.isnull().sum()
+
+            logging.info(f"Missing values in train dataset before transformation: {missing_train_values}")
+            logging.info(f"Missing values in test dataset before transformation: {missing_test_values}")
+
             logging.info("Obtaining preprocessing object")
 
             preprocessing_obj=self.get_data_transformer_object()
 
             target_column_name="BAD"
-            numerical_columns = ["REASON", "JOB"]
+            numerical_columns = ["LOAN", "DEBTINC",  "CLNO", "DELINQ", "NINQ", "DEROG", "YOJ", "MORTDUE", "VALUE"]
 
             input_feature_train_df=train_df.drop(columns=[target_column_name],axis=1)
             target_feature_train_df=train_df[target_column_name]
@@ -97,6 +102,13 @@ class DataTransformation:
             input_feature_train_arr=preprocessing_obj.fit_transform(input_feature_train_df)
             input_feature_test_arr=preprocessing_obj.transform(input_feature_test_df)
 
+            # Check if missing values are still present after transformation
+            missing_train_values_after = np.isnan(input_feature_train_arr).sum()
+            missing_test_values_after = np.isnan(input_feature_test_arr).sum()
+
+            logging.info(f"Missing values in train dataset after transformation: {missing_train_values_after}")
+            logging.info(f"Missing values in test dataset after transformation: {missing_test_values_after}")
+            
             train_arr = np.c_[
                 input_feature_train_arr, np.array(target_feature_train_df)
             ]
