@@ -1,0 +1,132 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Default Prediction</title>
+    <style>
+            /* Custom styles for the result message */
+            .default-message {
+                color: red;
+                font-weight: bold;
+            }
+    
+            .no-default-message {
+                color: green;
+                font-weight: bold;
+            }
+    
+            .form-control {
+                margin-bottom: 10px;
+            }
+            
+            .btn-primary {
+                margin-top: 10px;
+            }
+    </style>
+</head>
+<body>
+    <div class="login">
+       <h1>Loan Default Indicator</h1>
+   
+       <form action="{{ url_for('predict_datapoint')}}" method="post">
+        <h1>
+            <legend>Loan Default Prediction</legend>
+        </h1>
+        <div class="mb-3">
+            <label class="form-label">Value of Loan Approved</label>
+            <input class="form-control" type="number" name="LOAN"
+                placeholder="Enter Loan Amount" min='0' max='1000000' />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Amount Due on the Existing Mortgage</label>
+            <input class="form-control" type="number" name="MORTDUE"
+                placeholder="Enter Existing Mortgage Amount"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Current Value of the Property</label>
+            <input class="form-control" type="number" name="VALUE"
+                placeholder="Enter Value of property"/>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Reason for the Loan Request</label>
+            <select class="form-control" name="REASON" placeholder="Select Reason" required>
+                <option class="placeholder" selected disabled value="">Select reason</option>
+                <option value="HomeImp">
+                    Home Improvement
+                </option>
+                <option value="DebtCon">
+                    Debt Consolidation
+                </option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Job</label>
+            <select class="form-control" name="JOB" placeholder="Enter your Job" required>
+                <option class="placeholder" selected disabled value="">Select Job</option>
+                <option value="Office">
+                    Office
+                </option>
+                <option value="Sales">
+                    Sales
+                </option>
+                <option value="Mgr">
+                    Manager
+                </option>
+                <option value="ProfExe">
+                    Proffesional Executive
+                </option>
+                <option value="Self">
+                    Self Employed
+                </option>
+                <option value="Other">
+                    Other
+                </option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Years at Present Job</label>
+            <input class="form-control" type="number" name="YOJ"
+                placeholder="Enter Number of Years" min='0' max='60' />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Number of Major Derogatory Reports</label>
+            <input class="form-control" type="number" name="DEROG"
+                placeholder="Enter Number" min='0' max='20' />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Number of Delinquent Credit Lines</label>
+            <input class="form-control" type="number" name="DELINQ"
+                placeholder="Enter Number" min='0' max='20' />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Age of the oldest credit line in months</label>
+            <input class="form-control" type="number" name="CLAGE"
+                placeholder="Enter Value" min='0' max='1200' />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Number of recent credit inquiries</label>
+            <input class="form-control" type="number" name="NINQ"
+                placeholder="Enter Value" min='0' max='50' />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Number of existing credit lines</label>
+            <input class="form-control" type="number" name="CLNO"
+                placeholder="Enter Value" min='0' max='200' />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Debt-to-income Ratio: (all your monthly debt payments divided by your gross monthly income) </label>
+            <input class="form-control" type="number" name="DEBTINC"
+                placeholder="Enter Value" />
+        
+        <div class="mb-3">
+            <input class="btn btn-primary" type="submit" value="Predict Loan Outcome" required />
+        </div>
+         <!-- Display the prediction message with conditional styling -->
+         {% if result_message %}
+         <h2 class="{{ 'no-default-message' if 'not' in result_message else 'default-message' }}">
+             {{ result_message }}
+         </h2>
+     {% endif %}
+    </div>
+<body>
+</html>

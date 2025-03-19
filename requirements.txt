@@ -9,4 +9,5 @@ statsmodels
 xgboost
 dill
 catboost
+Flask
 -e .
