@@ -2,7 +2,6 @@ sagemaker
 scikit-learn
 pandas
 numpy
-ipykernel
 matplotlib
 seaborn
 statsmodels
@@ -10,4 +9,3 @@ xgboost
 dill
 catboost
 Flask
--e .
