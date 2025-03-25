@@ -1,4 +1,3 @@
-sagemaker
 scikit-learn
 pandas
 numpy
@@ -9,3 +8,4 @@ xgboost
 dill
 catboost
 Flask
+# -e .
