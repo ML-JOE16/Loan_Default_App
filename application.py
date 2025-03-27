@@ -56,5 +56,5 @@ def predict_datapoint():
         # Render the result message on the web page
         return render_template('home.html', result_message=result_message)
 
-if __name__=="__main__":
-    app.run(host="0.0.0.0")
+#if __name__=="__main__":
+    #app.run(host="0.0.0.0", port=5000)  let gunicorn run elastic beanstalk for production environment
