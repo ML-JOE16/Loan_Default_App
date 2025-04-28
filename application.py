@@ -1,6 +1,7 @@
 from flask import Flask,request,render_template
 import numpy as np
 import pandas as pd
+import re
 
 from sklearn.preprocessing import StandardScaler
 
@@ -9,6 +10,25 @@ from src.pipeline.predict_pipeline import CustomData,PredictPipeline
 application=Flask(__name__)
 
 app=application
+
+# Function to validate input data
+def is_valid_input(data):
+    """
+    Validate input to make sure no harmful or unexpected data is passed in.
+    """
+    # Check for invalid characters like shell commands, special characters, etc.
+    forbidden_patterns = [
+        r"[\n\r]",  # Newline or carriage return (can be used for injection)
+        r"(/bin/|/etc/|%SYSTEMROOT%)",  # Path traversal and Windows command attempts
+        r"[\`\"\&\|\;]",  # Shell special characters (backticks, quotes, etc.)
+    ]
+    
+    # Check each forbidden pattern
+    for pattern in forbidden_patterns:
+        if re.search(pattern, str(data)):  # Convert data to string for regex match
+            return False  # Invalid input found
+    
+    return True
 
 ## Route for a home page
 
